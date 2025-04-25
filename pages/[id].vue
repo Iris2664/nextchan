@@ -1,9 +1,9 @@
 <template>
+    <template>
     <main class="flex flex-col gap-4">
+        <PostCard />
+        
         <PostForm />
-
-        <PostCard />
-        <PostCard />
-        <PostCard />
     </main>
+</template>
 </template>
