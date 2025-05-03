@@ -1,17 +1,22 @@
-import { PostSchema } from "~/server/models/post.schema";
+import { defineEventHandler, readBody } from 'h3';
+import { Post } from '~/server/models/post.schema'; // Post モデルをインポート
 
 export default defineEventHandler(async (event) => {
-    const body = await readBody(event);
+  const body = await readBody(event);
+  const { name, text, parentId } = body;
 
-    const { name, text, parentId } = body;
+  try {
+    if (!text) {
+      setResponseStatus(event, 400);
+      return { error: 'Text is required.' };
+    }
 
-    const post = new PostSchema({
-        name,
-        text,
-        parent: parentId,
-    });
-
-    await post.save();
-
-    return post;
+    const newPost = new Post({ name, text, parent: parentId || undefined });
+    const savedPost = await newPost.save();
+    return savedPost;
+  } catch (error) {
+    console.error('Error saving post:', error);
+    setResponseStatus(event, 500);
+    return { error: error.message };
+  }
 });
