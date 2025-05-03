@@ -1,7 +1,7 @@
 import { defineMongooseModel } from "#nuxt/mongoose";
 import { Schema } from "mongoose";
 
-export const PostSchema = defineMongooseModel("Post", {
+export const PostSchema = defineMongooseModel({
     name: "Post",
     schema: {
         name: {
@@ -25,7 +25,7 @@ export interface PostResponse {
     _id: string;
     name?: string;
     text: string;
-    parent?: string;
+    parent?: PostResponse;
     createdAt: string;
     updatedAt: string;
 }
